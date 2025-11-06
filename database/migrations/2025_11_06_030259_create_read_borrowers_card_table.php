@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('client_id')->constrained('client')->cascadeOnDelete();
             $table->enum('return_status', ['yes', 'no'])->default('no');
             $table->string('condition'); // In the frontend, I plan to put the condition field as a dropdown with options like "Good", "Damaged", "Lost", etc.
+            $table->date('due_date');
             $table->timestamps();
         });
     }
