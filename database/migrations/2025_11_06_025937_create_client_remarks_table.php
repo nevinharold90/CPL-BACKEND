@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('client_remarks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained('client')->cascadeOnDelete();
             $table->string('remark');
             $table->timestamps();
         });

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('qr_data')->unique();
             $table->integer('accession_number_id')->unique();
-            $table->foreignId('book_author_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('call_number_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('qr_book_image_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('book_author_id')->constrained('book_author')->cascadeOnDelete();
+            $table->foreignId('call_number_id')->constrained('call_number')->cascadeOnDelete();
+            $table->foreignId('qr_book_image_id')->constrained('qr_book_image')->cascadeOnDelete();
             $table->enum('status', ['available', 'checked_out', 'reserved', 'lost'])->default('available');
             $table->integer('year_published');
             $table->timestamps();

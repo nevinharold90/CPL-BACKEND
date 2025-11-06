@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('read_walk_in', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('book_id')->constrained('book')->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained('client')->cascadeOnDelete();
             $table->timestamps();
         });
     }
