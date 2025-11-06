@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('book', function (Blueprint $table) {
             $table->id();
+            $table->string('qr_data')->unique();
+            $table->integer('accession_number_id')->unique();
+            $table->foreignId('book_author_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('call_number_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('qr_book_image_id')->constrained()->cascadeOnDelete();
+            $table->enum('status', ['available', 'checked_out', 'reserved', 'lost'])->default('available');
+            $table->integer('year_published');
             $table->timestamps();
         });
     }

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('read_borrowers_card', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('book_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->enum('return_status', ['yes', 'no'])->default('no');
+            $table->string('condition'); // In the frontend, I plan to put the condition field as a dropdown with options like "Good", "Damaged", "Lost", etc.
             $table->timestamps();
         });
     }

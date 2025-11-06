@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('qr_book_image', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('book_image_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('book_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

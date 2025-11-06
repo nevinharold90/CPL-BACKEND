@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('call_number', function (Blueprint $table) {
             $table->id();
+            $table->integer('main_class');
+            $table->integer('division_class');
+            $table->integer('section_class');
+            $table->string('call_name');
             $table->timestamps();
         });
     }
