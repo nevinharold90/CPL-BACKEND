@@ -18,11 +18,16 @@ class ReadBorrowersCard extends Model
     ];
 
         public function client(){
-            return $this->hasMany(Client::class);
+            return $this->belongsTo(Client::class);
         }
 
         public function book()
         {
-            return $this->hasMany(Book::class);
+            return $this->belongsTo(Book::class);
+        }
+
+        public function user()
+        {
+            return $this->belongsTo(Users::class);
         }
 }

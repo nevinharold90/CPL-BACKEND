@@ -25,7 +25,7 @@ class Book extends Model
 
     public function bookAuthor()
     {
-        return $this->belongsTo(BookAuthor::class);
+        return $this->hasMany(BookAuthor::class);
     }
 
     public function readBorrowersCard()
@@ -35,12 +35,17 @@ class Book extends Model
 
     public function readWalkIn()
     {
-        return $this->belongsTo(ReadWalkIn::class);
+        return $this->hasMany(ReadWalkIn::class);
     }
 
     public function callNumber()
     {
         return $this->belongsTo(CallNumber::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class);
     }
 
 // Sample

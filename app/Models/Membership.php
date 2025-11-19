@@ -5,19 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReadWalkIn extends Model
+class Membership extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'book_id',
-        'client_id'
+        'membership_card_id_no',
+        'client_id',
+        'user_id',
+        'valid_until',
+        'status',
     ];
 
-    public function book(){
-        return $this->belongsTo(Book::class);
-    }
-    public function client(){
+    public function client()
+    {
         return $this->belongsTo(Client::class);
     }
 
@@ -25,4 +26,5 @@ class ReadWalkIn extends Model
     {
         return $this->belongsTo(Users::class);
     }
+
 }

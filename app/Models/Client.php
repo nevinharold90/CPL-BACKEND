@@ -26,15 +26,20 @@ class Client extends Model
     }
     public function readBorrowersCard()
     {
-        return $this->belongsTo(ReadBorrowersCard::class);
+        return $this->hasMany(ReadBorrowersCard::class);
     }
 
     public function readWalkIn()
     {
-        return $this->belongsTo(ReadWalkIn::class);
+        return $this->hasMany(ReadWalkIn::class);
     }
     public function visit()
     {
         return $this->hasMany(Visit::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(Users::class);
     }
 }
