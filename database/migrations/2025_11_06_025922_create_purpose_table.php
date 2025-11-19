@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('purpose', function (Blueprint $table) {
             $table->id();
             $table->foreignId('visit_id')->constrained('visit')->cascadeOnDelete();
+            $table->string('purpose');
+            $table->string('room')->nullable();
             $table->timestamps();
         });
     }

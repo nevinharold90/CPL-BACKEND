@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('book', function (Blueprint $table) {
             $table->id();
-            $table->integer('accession_number_id')->unique();
+            $table->string('qr_id')->unique();
+            $table->string('accession_number_id')->unique();
             $table->foreignId('call_number_id')->constrained('call_number')->cascadeOnDelete();
-            $table->string('qr_data')->unique();
-            // $table->foreignId('qr_book_image_id')->constrained('qr_book_image')->cascadeOnDelete();
-            $table->enum('status', ['available', 'checked_out', 'reserved', 'lost'])->default('available');
-            $table->integer('year_published');
+            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
+            $table->string('title');
+            $table->string('status'); //available', 'donated', 'walk-in', 'lost'
+            $table->string('category')->nullable(); //General circulation, Reference, etc.
+            $table->string('condition')->nullable(); //new, good, some wear, damaged
+            $table->string('source_of_fund')->nullable(); //donated, purchased
+            $table->date('year_published');
             $table->timestamps();
+            // $table->foreignId('qr_book_image_id')->constrained('qr_book_image')->cascadeOnDelete();
         });
     }
 
