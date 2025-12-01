@@ -12,12 +12,23 @@ class Users extends Model
     protected $fillable = [
         'employee_id_no',
         'username',
-        'name',
+        'last_name',
+        'first_name',
+        'middle_name',
         'email',
         'password',
         'status',
         'c_number',
         'role',
+    ];
+
+        protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+        protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     public function book()
@@ -45,9 +56,9 @@ class Users extends Model
         return $this->hasMany(Membership::class);
     }
 
-    // public function log()
-    // {
-    //     return $this->belongsTo(Log::class);
-    // }
+    public function log()
+    {
+        return $this->belongsTo(Log::class);
+    }
 
 }

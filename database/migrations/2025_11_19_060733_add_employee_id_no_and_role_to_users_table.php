@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('employee_id_no')->unique()->after('id');
-            $table->string('status')->after('password');
+            $table->string('status')->default('offline')->after('password');
             $table->string('c_number')->after('status');
-            $table->string('role')->after('c_number');
+            // $table->string('role')->after('c_number');
         });
     }
 
