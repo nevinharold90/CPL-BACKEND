@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Controllers\_Test\OnlineUsers;
 
     // User Route
         Route::post('user/register', [RegisterController::class, 'register']);
@@ -18,4 +19,6 @@ use App\Http\Controllers\Users\UserController;
         Route::get('test', function () {
             return ['message' => 'API routes working'];
         });
+
+        Route::get('/online-check', [OnlineUsers::class, 'checkStatus']);
     // API Checker

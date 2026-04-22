@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Users;
+use App\Http\Resources\UserResource;
 
 class RegisterController extends Controller
 {
@@ -34,12 +35,11 @@ class RegisterController extends Controller
             'password'       => Hash::make($request->password),
             'c_number'       => $request->c_number ?? '',
             'role'           => 'user',     // default role
-            'status'         => 'offline',  // default status
         ]);
 
         return response()->json([
             'message' => 'User registered successfully',
-            'user'    => $user,
+            'user'    => new UserResource($user),
         ], 201);
     }
 }

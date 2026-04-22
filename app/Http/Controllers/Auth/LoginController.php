@@ -33,7 +33,7 @@ class LoginController extends BaseController
         $user = Auth::user();
 
         // Create access token
-        $token = $user->createToken('MyApp')->accessToken;
+        $token = $user->createToken('MyApp')->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',

@@ -16,9 +16,12 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('first_name');
             $table->string('middle_name')->nullable();
+            $table->string('employee_id_no')->nullable()->unique();
             $table->string('role');
+            $table->string('status')->default('offline');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('c_number');
             $table->string('username')->unique();
             $table->string('password');
             $table->rememberToken();

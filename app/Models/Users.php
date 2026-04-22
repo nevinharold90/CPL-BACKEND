@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
+
+// use Laravel\Passport\HasApiTokens;
+
 
 class Users extends Authenticatable
 {
@@ -64,4 +67,10 @@ class Users extends Authenticatable
         return $this->belongsTo(Log::class);
     }
 
+    // Start -  Check if user is online by looking for their presence in the cache
+        public function isOnline(): bool
+        {
+            return \Illuminate\Support\Facades\Cache::has('user-is-online-' . $this->id);
+        }
+    // End -  Check if user is online by looking for their presence in the cache
 }

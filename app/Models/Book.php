@@ -10,7 +10,7 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
-        'qr_data',
+        'barcode_data',
         'accession_number_id',
         'call_number_id',
         'title',
@@ -18,9 +18,9 @@ class Book extends Model
         'year_published',
     ];
 
-    public function qrBookImages()
+    public function barcodeBookImages()
     {
-        return $this->hasMany(QrBookImage::class);
+        return $this->hasMany(BarcodeBookImage::class);
     }
 
     public function bookAuthor()
