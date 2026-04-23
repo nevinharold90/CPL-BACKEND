@@ -33,6 +33,15 @@ class LoginController extends BaseController
         /** @var \App\Models\Users $user **/
         $user = Auth::user();
 
+        // Email Logic
+        if ($user->role === 'admin') {
+            \Illuminate\Support\Facades\Mail::to('cabarrubias.nevinharold@gmail.com')
+                ->send(new \App\Mail\AdminLoginNotification($user));
+        }
+
+        /** @var \App\Models\Users $user **/
+        $user = Auth::user();
+
         // Create access token
         $token = $user->createToken('MyApp')->plainTextToken;
 
