@@ -8,6 +8,7 @@ use App\Http\Controllers\BaseController;
 // use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\UserResource;
 
 
 class LoginController extends BaseController
@@ -35,10 +36,20 @@ class LoginController extends BaseController
         // Create access token
         $token = $user->createToken('MyApp')->plainTextToken;
 
+        $user->status = 'online';
+        $user->save();
+        $user->refresh();
+
+        // Record their "Pulse" in the Cache as well
+        \Illuminate\Support\Facades\Cache::put('user-is-online-' . $user->id, true, now()->addMinutes(5));
+
+        // Create access token
+        $token = $user->createToken('MyApp')->plainTextToken;
+
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,
-            'user' => $user
+            'user' => new UserResource($user)
         ], 200);
     }
 
