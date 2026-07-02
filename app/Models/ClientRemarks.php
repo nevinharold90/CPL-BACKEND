@@ -11,11 +11,11 @@ class ClientRemarks extends Model
 
     protected $fillable = [
         'client_id',
-        'remark',
+        'remarks',
     ];
 
-    public function remarks()
+    public function clientSessions()
     {
-        return $this->belongsTo(ClientRemarks::class);
+        return $this->belongsTo(ClientSession::class);
     }
 }

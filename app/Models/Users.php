@@ -37,25 +37,8 @@ class Users extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function book()
-    {
-        return $this->hasMany(Book::class);
-    }
 
-    public function readBorrowersCard()
-    {
-        return $this->hasMany(ReadBorrowersCard::class);
-    }
 
-    public function readWalkIn()
-    {
-        return $this->hasMany(ReadWalkIn::class);
-    }
-
-    public function client()
-    {
-        return $this->hasMany(Client::class);
-    }
 
     public function membership()
     {
@@ -66,6 +49,26 @@ class Users extends Authenticatable
     {
         return $this->belongsTo(Log::class);
     }
+
+    public function userCredential()
+    {
+        return $this->hasMany(UserCredential::class);
+    }
+
+        // public function book()
+    // {
+    //     return $this->hasMany(Book::class);
+    // }
+
+        // public function readWalkIn()
+    // {
+    //     return $this->hasMany(ReadWalkIn::class);
+    // }
+
+    // public function client()
+    // {
+    //     return $this->hasMany(Client::class);
+    // }
 
     // Start -  Check if user is online by looking for their presence in the cache
         public function isOnline(): bool

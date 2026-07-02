@@ -11,13 +11,11 @@ class CallNumber extends Model
 
     protected $fillable = [
         'call_number',
-        'parent_id',
-        'sub_parent_id',
         'call_name'
-    ];
+        ];
 
-    public function book()
+    public function bookClassification()
     {
-        return $this->hasMany(Book::class);
+        return $this->hasMany(BookClassification::class);
     }
 }

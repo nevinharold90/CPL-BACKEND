@@ -14,11 +14,12 @@ class Visit extends Model
         'visit_date',
     ];
 
-    public function client(){
-        return $this->belongsTo(Client::class);
-    }
 
     public function purpose(){
         return $this->hasMany(Purpose::class);
+    }
+
+    public function userCredential(){
+        return $this->belongsTo(UserCredential::class);
     }
 }

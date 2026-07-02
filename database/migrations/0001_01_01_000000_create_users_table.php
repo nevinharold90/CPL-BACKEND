@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('employee_id_no')->nullable()->unique();
             $table->string('role');
             $table->string('status')->default('offline');
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('c_number');
             $table->string('username')->unique();

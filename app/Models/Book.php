@@ -11,42 +11,57 @@ class Book extends Model
 
     protected $fillable = [
         'barcode_data',
+        'qrcode_data',
         'accession_number_id',
-        'call_number_id',
+        'user_id',
         'title',
         'status',
-        'year_published',
+        'condition',
+        'source_of_fund'
     ];
 
-    public function barcodeBookImages()
-    {
-        return $this->hasMany(BarcodeBookImage::class);
-    }
 
     public function bookAuthor()
     {
         return $this->hasMany(BookAuthor::class);
     }
 
-    public function readBorrowersCard()
-    {
-        return $this->hasMany(ReadBorrowersCard::class);
-    }
-
-    public function readWalkIn()
-    {
-        return $this->hasMany(ReadWalkIn::class);
-    }
-
-    public function callNumber()
-    {
-        return $this->belongsTo(CallNumber::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(Users::class);
     }
+
+    public function bookClassification()
+    {
+        return $this->hasMany(BookClassification::class);
+    }
+
+    public function readSession()
+    {
+        return $this->hasMany(ReadSession::class);
+    }
+
+
+    // public function bookCover()
+    // {
+    //     return $this->hasMany(BookCover::class);
+    // }
+
+    // public function readBorrowersCard()
+    // {
+    //     return $this->hasMany(ReadBorrowersCard::class);
+    // }
+
+
+    // public function callNumber()
+    // {
+    //     return $this->belongsTo(CallNumber::class);
+    // }
+
+    // public function readWalkIn()
+    // {
+    //     return $this->hasMany(ReadWalkIn::class);
+    // }
 
 // Sample
     // public function qrBookImages()

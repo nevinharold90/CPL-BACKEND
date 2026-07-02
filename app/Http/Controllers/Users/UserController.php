@@ -16,5 +16,4 @@ public function index()
         // Wrap your users in the Resource so the is_online check runs
         return UserResource::collection($users);
     }
-
 }
