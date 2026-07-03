@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->string('membership_card_id_no')->unique();
-            $table->foreignId('client_id')->constrained('client')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
             $table->date('valid_until');
             $table->enum('status', ['active', 'revoked', 'expired','inactive'])->default('inactive');
             $table->timestamps();
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('membership');
+        Schema::dropIfExists('memberships');
     }
 };

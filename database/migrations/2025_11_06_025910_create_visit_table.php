@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('visits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('client')->cascadeOnDelete();
+            $table->foreignId('user_credential_id')->constrained('user_credentials')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('visit');
+        Schema::dropIfExists('visits');
     }
 };

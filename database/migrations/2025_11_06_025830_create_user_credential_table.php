@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('user_credentials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
             $table->string('last_name');
             $table->string('first_name');
             $table->string('middle_name')->nullable();
-            $table->integer('age');
-            $table->date('birthdate');
+            $table->string('organization')->nullable();
+            $table->string('address')->nullable();
             $table->string('c_number')->nullable();
-            $table->enum('sex',['Male', 'Female']);
-            $table->string('organization');
-            $table->string('address');
+            $table->string('role')->nullable();
             $table->timestamps();
+            // $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
+            // $table->integer('age');
+            // $table->date('birthdate');
         });
 
         // Sample
@@ -45,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client');
+        Schema::dropIfExists('user_credentials');
     }
 };

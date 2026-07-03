@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('call_numbers', function (Blueprint $table) {
             $table->id();
             $table->integer('call_number');
-            $table->integer('parent_id');
-            $table->integer('sub_parent_id');
             $table->string('call_name');
+            // $table->integer('parent_id');
+            // $table->integer('sub_parent_id');
             $table->timestamps();
         });
     }

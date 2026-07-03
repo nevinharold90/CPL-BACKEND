@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('client_remarks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('client')->cascadeOnDelete();
-            $table->string('remark');
+            $table->foreignId('user_credential_id')->constrained('user_credentials')->cascadeOnDelete();
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }
