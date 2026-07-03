@@ -55,6 +55,8 @@ class Users extends Authenticatable
         return $this->hasMany(UserCredential::class);
     }
 
+
+
         // public function book()
     // {
     //     return $this->hasMany(Book::class);
