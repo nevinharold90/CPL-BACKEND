@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('read_sessions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete();
+            $table->foreignId('user_credential_id')->constrained('user_credentials')->cascadeOnDelete();
+            $table->string('reading_type');
+            $table->enum('returned_status', ['n', 'y'])->default('n');
+            $table->date('return_date')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('book_reviews', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('book_reviews_id')->constrained('books')->cascadeOnDelete();
+            $table->decimal('rating', 2, 2);
             $table->timestamps();
         });
     }

@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Announcement extends Model
+class Ticket extends Model
 {
-
-    // THIS IS UNDER TO BE DISCUSSED!
     protected $fillable = [
-
+        'user_id',
+        'type',
+        'log_message',
     ];
 
     public function user()

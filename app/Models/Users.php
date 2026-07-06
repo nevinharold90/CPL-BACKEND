@@ -39,6 +39,15 @@ class Users extends Authenticatable
 
 
 
+    public function announcement()
+    {
+        return $this->hasMany(Announcement::class);
+    }
+
+    public function ticket()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 
     public function membership()
     {
@@ -47,7 +56,7 @@ class Users extends Authenticatable
 
     public function log()
     {
-        return $this->belongsTo(Log::class);
+        return $this->hasMany(Log::class);
     }
 
     public function userCredential()
