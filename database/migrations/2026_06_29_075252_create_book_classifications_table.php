@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('book_classifications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete();
+            $table->foreignId('call_numbers_id')->constrained('call_numbers')->cascadeOnDelete();
+            $table->enum('book_type', ['fiction', 'non-fiction']);
+            $table->string('cutter_number');
+            $table->year('year_published');
+            $table->string('category');
             $table->timestamps();
         });
     }
