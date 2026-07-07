@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('barcode_data')->unique()->nullable();
             $table->string('qrcode_data')->unique()->nullable();
             $table->string('accession_number_id')->unique();
+            $table->string('isbn')->nullable();
             $table->string('title');
             $table->string('status'); //available','not available', '', 'donated', 'walk-in', 'lost'
             $table->string('category')->nullable(); //General circulation, Reference, etc.

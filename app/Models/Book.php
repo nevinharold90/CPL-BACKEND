@@ -14,10 +14,11 @@ class Book extends Model
         'qrcode_data',
         'accession_number_id',
         'user_id',
+        'isbn',
         'title',
         'status',
         'condition',
-        'source_of_fund'
+        'source_of_fund',
     ];
 
 
