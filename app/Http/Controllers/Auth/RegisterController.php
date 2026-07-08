@@ -2,78 +2,69 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Users;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\UserResource;
+use App\Models\Users;
+use App\Models\UserCredential;
 
-class RegisterController extends Controller
+class RegisterController extends BaseController
 {
-    // public function register(Request $request)
-    // {
-    //     // Validate input
-    //     $request->validate([
-    //         'employee_id_no' => 'required|unique:users,employee_id_no',
-    //         'username'       => 'required|unique:users,username',
-    //         'first_name'     => 'required|string|max:255',
-    //         'last_name'      => 'required|string|max:255',
-    //         'middle_name'    => 'nullable|string|max:255',
-    //         'email'          => 'required|string|email|max:255|unique:users,email',
-    //         'password'       => 'required|string|min:8|confirmed',
-    //         'c_number'       => 'nullable|string|max:15',
-    //     ]);
 
-    //     // Create user
-    //     $user = Users::create([
-    //         'employee_id_no' => $request->employee_id_no,
-    //         'username'       => $request->username,
-    //         'first_name'     => $request->first_name,
-    //         'last_name'      => $request->last_name,
-    //         'middle_name'    => $request->middle_name ?? '',
-    //         'email'          => $request->email,
-    //         'password'       => Hash::make($request->password),
-    //         'c_number'       => $request->c_number ?? '',
-    //         'role'           => 'user',     // default role
-    //     ]);
+    public function clientRegister(Request $request)
+    {
 
-    //     return response()->json([
-    //         'message' => 'User registered successfully',
-    //         'user'    => new UserResource($user),
-    //     ], 201);
-    // }
+    }
 
     // ADMIN ACCOUNT
-    public function register(Request $request)
-    {
-        // Validate input
-        $request->validate([
-            'employee_id_no' => 'required|unique:users,employee_id_no',
-            'username'       => 'required|unique:users,username',
-            'first_name'     => 'required|string|max:255',
-            'last_name'      => 'required|string|max:255',
-            'middle_name'    => 'nullable|string|max:255',
-            'email'          => 'required|string|email|max:255|unique:users,email',
-            'password'       => 'required|string|min:8|confirmed',
-            'c_number'       => 'nullable|string|max:15',
-        ]);
+    public function createAdmin(Request $request)
+        {
+        // 1. Validate incoming admin registration data
+        // $request->validate([
+        //     'name'     => 'required|string|max:255',
+        //     'username' => 'required|string|unique:users,username|max:50',
+        //     'email'    => 'required|email|unique:users,email|max:255',
+        //     'password' => 'required|string|min:8', // Admin passwords should be secure!
+        // ]);
 
-        // Create user
-        $user = Users::create([
-            'employee_id_no' => $request->employee_id_no,
-            'username'       => $request->username,
-            'first_name'     => $request->first_name,
-            'last_name'      => $request->last_name,
-            'middle_name'    => $request->middle_name ?? '',
-            'email'          => $request->email,
-            'password'       => Hash::make($request->password),
-            'c_number'       => $request->c_number ?? '',
-            'role'           => 'admin',     // default role
-        ]);
+        // 2. Wrap creation in a transaction to guarantee data safety across both tables
+        $adminUser = DB::transaction(function () use ($request) {
+
+            // Step A: Create the Admin's base profile identity record
+            $credential = UserCredential::create([
+                'last_name'             => $request->last_name,
+                'first_name'            => $request->first_name,
+                'middle_name'           => $request->middle_name ?? null,
+                'address'               => $request->address ?? null,
+                'role'                  => 'Admin', // Or whatever flag matches your system for system management
+                'organization_office'   => $request->organization_office ?? null,
+                'c_number'              => $request->c_number ?? null
+            ]);
+
+            // Step B: Create the Admin's system login account linked to that profile ID
+            return Users::create([
+                'user_credentials_id'   => $credential->id,
+                'employee_id_no'        => $request->employee_id_no,
+                'username'              => $request->username,
+                'email'                 => $request->email,
+                'password'              => Hash::make($request->password),
+                'role'                  => $request->role, // Assigning the highest role from your schema (Guest|Client|Staff|Dev)
+                'status'                => 'offline',
+                'sex'                   => $request->sex
+            ]);
+        });
 
         return response()->json([
-            'message' => 'User registered successfully',
-            'user'    => new UserResource($user),
+            'status'  => 'success',
+            'message' => 'System Administrator account provisioned successfully.',
+            'data'    => [
+                'id'       => $adminUser->id,
+                'username' => $adminUser->username,
+                'email'    => $adminUser->email,
+                'role'     => $adminUser->role
+            ]
         ], 201);
     }
 }
