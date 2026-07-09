@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\BaseController;
+use Illuminate\Database\Eloquent\Attributes\UseResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -40,19 +41,20 @@ class RegisterController extends BaseController
                 'address'               => $request->address ?? null,
                 'role'                  => 'Admin', // Or whatever flag matches your system for system management
                 'organization_office'   => $request->organization_office ?? null,
-                'c_number'              => $request->c_number ?? null
+                'c_number'              => $request->c_number
             ]);
 
             // Step B: Create the Admin's system login account linked to that profile ID
             return Users::create([
-                'user_credentials_id'   => $credential->id,
+                'user_credential_id'   => $credential->id,
                 'employee_id_no'        => $request->employee_id_no,
                 'username'              => $request->username,
                 'email'                 => $request->email,
                 'password'              => Hash::make($request->password),
                 'role'                  => $request->role, // Assigning the highest role from your schema (Guest|Client|Staff|Dev)
                 'status'                => 'offline',
-                'sex'                   => $request->sex
+                'sex'                   => $request->sex,
+                'has_account'           => true
             ]);
         });
 
@@ -66,5 +68,16 @@ class RegisterController extends BaseController
                 'role'     => $adminUser->role
             ]
         ], 201);
-    }
+
+        }
+        public function indexAdmin()
+        {
+            // Fetch users where the role is either 'Admin' OR 'Dev'
+            $adminsAndDevs = Users::whereIn('role', ['Admin', 'Dev'])->get();
+
+            return response()->json([
+                'status' => 'success',
+                'data'   => UserResource::collection($adminsAndDevs)
+            ]);
+        }
 }

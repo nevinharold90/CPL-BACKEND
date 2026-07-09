@@ -16,10 +16,11 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('first_name');
             $table->string('middle_name')->nullable();
-            $table->string('organization')->nullable();
+            $table->string('organization_office')->nullable();
             $table->string('address')->nullable();
             $table->string('c_number')->nullable();
             $table->string('role')->nullable();
+            $table->boolean('has_account')->default(false);
             $table->timestamps();
             // $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
             // $table->integer('age');

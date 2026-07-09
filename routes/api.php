@@ -8,7 +8,9 @@ use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\_Test\OnlineUsers;
 
     // User Route
-        Route::post('user/register', [RegisterController::class, 'register']);
+        Route::post('user/admin/register', [RegisterController::class, 'createAdmin']);
+        Route::get('user/admin/index', [RegisterController::class, 'indexAdmin']);
+
         Route::post('user/login', [LoginController::class, 'login']);
         Route::post('user/logout', [LogoutController::class, 'logout'])->middleware('auth:api');
         Route::get('user/index', [UserController::class, 'index']);

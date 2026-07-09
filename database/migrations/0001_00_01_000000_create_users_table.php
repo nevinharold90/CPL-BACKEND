@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('role');
             $table->string('status')->default('offline');
             $table->string('email')->nullable()->unique();
-            $table->string('c_number');
+            // $table->string('c_number');
             $table->string('username')->unique();
             $table->string('password');
             $table->enum('sex',['male', 'female']);

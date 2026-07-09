@@ -16,6 +16,7 @@ class Users extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
+        'user_credential_id',
         'employee_id_no',
         'username',
         'last_name',
@@ -24,7 +25,7 @@ class Users extends Authenticatable
         'email',
         'password',
         'status',
-        'c_number',
+        // 'c_number',
         'role',
     ];
 
@@ -44,10 +45,6 @@ class Users extends Authenticatable
         return $this->hasMany(Announcement::class);
     }
 
-    public function ticket()
-    {
-        return $this->hasMany(Ticket::class);
-    }
 
     public function membership()
     {
@@ -61,9 +58,13 @@ class Users extends Authenticatable
 
     public function userCredential()
     {
-        return $this->hasMany(UserCredential::class);
+        return $this->belongsTo(UserCredential::class, 'user_credential_id');
     }
 
+    // public function ticket()
+    // {
+    //     return $this->hasMany(Ticket::class);
+    // }
 
 
         // public function book()
