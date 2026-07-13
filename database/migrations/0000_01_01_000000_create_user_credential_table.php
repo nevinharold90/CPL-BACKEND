@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('c_number')->nullable();
             $table->string('role')->nullable();
             $table->boolean('has_account')->default(false);
+            $table->string('office_address')->nullable();
             $table->timestamps();
             // $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
             // $table->integer('age');

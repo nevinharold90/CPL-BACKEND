@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('role');
             $table->string('status')->default('offline');
             $table->string('email')->nullable()->unique();
-            // $table->string('c_number');
             $table->string('username')->unique();
+            $table->string('home_address')->nullable();
             $table->string('password');
             $table->enum('sex',['male', 'female']);
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
+            // $table->string('c_number');
             // $table->string('last_name');
             // $table->string('first_name');
             // $table->string('middle_name')->nullable();

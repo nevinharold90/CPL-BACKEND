@@ -41,7 +41,8 @@ class RegisterController extends BaseController
                 'address'               => $request->address ?? null,
                 'role'                  => 'Admin', // Or whatever flag matches your system for system management
                 'organization_office'   => $request->organization_office ?? null,
-                'c_number'              => $request->c_number
+                'c_number'              => $request->c_number ?? null,
+                'office_address'        => $request->office_address ?? null,
             ]);
 
             // Step B: Create the Admin's system login account linked to that profile ID
@@ -73,7 +74,9 @@ class RegisterController extends BaseController
         public function indexAdmin()
         {
             // Fetch users where the role is either 'Admin' OR 'Dev'
-            $adminsAndDevs = Users::whereIn('role', ['Admin', 'Dev'])->get();
+            $adminsAndDevs = Users::with('userCredential')
+                ->whereIn('role', ['admin', 'superadmin'])
+                ->paginate(10); // 10 users per page
 
             return response()->json([
                 'status' => 'success',

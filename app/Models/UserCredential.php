@@ -14,7 +14,8 @@ class UserCredential extends Model
         'address',
         'role',
         'c_number',
-        'has_account'
+        'has_account',
+        'office_address',
     ];
 
     public function readSessions()
