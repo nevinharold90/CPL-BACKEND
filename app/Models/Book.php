@@ -29,7 +29,7 @@ class Book extends Model
 
     public function user()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function bookClassification()
@@ -42,6 +42,10 @@ class Book extends Model
         return $this->hasMany(ReadSession::class);
     }
 
+    public function bookCopies()
+    {
+        return $this->hasMany(BookCopies::class);
+    }
 
     // public function bookCover()
     // {

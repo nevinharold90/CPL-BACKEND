@@ -17,7 +17,7 @@ class Purpose extends Model
 
     public function visits()
     {
-        return $this->belongsTo(Visit::class);
+        return $this->belongsTo(Visit::class, 'visit_id');
     }
 
 }

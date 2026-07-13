@@ -13,7 +13,7 @@ use App\Http\Controllers\_Test\OnlineUsers;
 
         Route::post('user/login', [LoginController::class, 'login']);
         Route::post('user/logout', [LogoutController::class, 'logout'])->middleware('auth:api');
-        Route::get('user/index', [UserController::class, 'index']);
+        // Route::get('user/index', [UserController::class, 'index']);
     // User Route
 
 

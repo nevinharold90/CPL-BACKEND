@@ -16,6 +16,6 @@ class ClientRemarks extends Model
 
     public function clientSessions()
     {
-        return $this->belongsTo(UserCredential::class);
+        return $this->belongsTo(UserCredential::class, 'client_id');
     }
 }

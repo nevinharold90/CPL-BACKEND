@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\UserResource;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\UserCredential;
 
 class RegisterController extends BaseController
@@ -46,7 +46,7 @@ class RegisterController extends BaseController
             ]);
 
             // Step B: Create the Admin's system login account linked to that profile ID
-            return Users::create([
+            return User::create([
                 'user_credential_id'   => $credential->id,
                 'employee_id_no'        => $request->employee_id_no,
                 'username'              => $request->username,
@@ -74,7 +74,7 @@ class RegisterController extends BaseController
         public function indexAdmin()
         {
             // Fetch users where the role is either 'Admin' OR 'Dev'
-            $adminsAndDevs = Users::with('userCredential')
+            $adminsAndDevs = User::with('userCredential')
                 ->whereIn('role', ['admin', 'superadmin'])
                 ->paginate(10); // 10 users per page
 

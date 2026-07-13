@@ -10,8 +10,8 @@ class CallNumber extends Model
     use HasFactory;
 
     protected $fillable = [
-        'call_number',
-        'call_name'
+            'call_number',
+            'call_name'
         ];
 
     public function bookClassification()

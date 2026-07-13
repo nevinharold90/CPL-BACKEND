@@ -22,12 +22,12 @@ class ReadSession extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class, 'book_id');
     }
 
-    public function userCredential()
-    {
-        return $this->belongsTo(UserCredential::class);
-    }
+    // public function userCredential()
+    // {
+    //     return $this->belongsTo(UserCredential::class, 'client_session_id');
+    // }
 
 }

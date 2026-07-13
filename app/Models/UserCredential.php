@@ -30,7 +30,7 @@ class UserCredential extends Model
 
     public function users()
     {
-        return $this->hasMany(Users::class, 'user_credentials_id');
+        return $this->hasMany(User::class, 'user_credentials_id');
     }
 
     public function visit()

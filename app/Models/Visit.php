@@ -19,7 +19,7 @@ class Visit extends Model
         return $this->hasMany(Purpose::class);
     }
 
-    public function userCredential(){
-        return $this->belongsTo(UserCredential::class);
-    }
+    // public function userCredential(){
+    //     return $this->belongsTo(UserCredential::class, 'client_id');
+    // }
 }

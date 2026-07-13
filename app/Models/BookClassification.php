@@ -17,11 +17,11 @@ class BookClassification extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class, 'book_id');
     }
 
     public function callNumber()
     {
-        return $this->belongsTo(CallNumber::class);
+        return $this->belongsTo(CallNumber::class, 'call_number_id');
     }
 }

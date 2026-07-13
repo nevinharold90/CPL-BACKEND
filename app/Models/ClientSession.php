@@ -27,7 +27,7 @@ class UserCredential extends Model
 
     public function users()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(User::class, 'user_credentials_id');
     }
 
     public function visit()

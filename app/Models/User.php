@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 // use Laravel\Passport\HasApiTokens;
 
 
-class Users extends Authenticatable
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
