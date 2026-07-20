@@ -10,32 +10,29 @@ use Illuminate\Support\Facades\Cache;
 class LogoutController extends Controller
 {
     public function logout(Request $request)
-    {
-        /** @var \App\Models\Users $user **/
-        $user = Auth::user();
+        {
+            $user = $request->user();
 
-        if ($user) {
-            // 1. Manually kill the "Online" status in the Cache
-            $user->status = 'offline';
-            $user->save();
-            // $user->refresh();
+            if ($user) {
+                // 1. Update status to offline
+                $user->status = 'offline';
+                $user->save();
 
-            \Illuminate\Support\Facades\Cache::forget('user-is-online-' . $user->id);
+                // 2. Forget online status in Cache
+                Cache::forget('user-is-online-' . $user->id);
 
-            // 2. Delete the Sanctum token
-            $request->user()->currentAccessToken()->delete();
+                // 3. Delete the current active Sanctum token
+                $user->currentAccessToken()->delete();
 
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Logged out successfully.'
+                ], 200);
+            }
 
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Logged out successfully.'
-            ], 200);
-        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Unable to logout.'
             ], 401);
         }
-    }
 }

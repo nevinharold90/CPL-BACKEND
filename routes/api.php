@@ -12,8 +12,9 @@ use App\Http\Controllers\_Test\OnlineUsers;
         Route::get('user/admin/index', [RegisterController::class, 'indexAdmin']);
 
         Route::post('user/login', [LoginController::class, 'login']);
-        Route::post('user/logout', [LogoutController::class, 'logout'])->middleware('auth:api');
-        // Route::get('user/index', [UserController::class, 'index']);
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::post('user/logout', [LogoutController::class, 'logout']);
+        });
     // User Route
 
 

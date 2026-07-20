@@ -30,7 +30,7 @@ class LoginController extends BaseController
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        /** @var \App\Models\Users $user **/
+        /** @var \App\Models\User $user **/
         $user = Auth::user();
 
         // Email Logic
@@ -39,7 +39,7 @@ class LoginController extends BaseController
                 ->send(new \App\Mail\AdminLoginNotification($user));
         }
 
-        /** @var \App\Models\Users $user **/
+        /** @var \App\Models\User $user **/
         $user = Auth::user();
 
         // Create access token
