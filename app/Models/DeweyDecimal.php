@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CallNumber extends Model
+class DeweyDecimal extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-            'call_number',
-            'call_name'
-        ];
+        'dd_number',
+        'dd_name'
+    ];
 
     public function bookClassification()
     {

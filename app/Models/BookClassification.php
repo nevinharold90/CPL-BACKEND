@@ -8,9 +8,10 @@ class BookClassification extends Model
 {
     protected $fillable = [
         'book_id',
-        'call_number_id',
-        'type',
+        'dewey_decimal_id',
+        'book_type',
         'cutter',
+        'category',
         'year_published',
         'location'
     ];
@@ -20,8 +21,8 @@ class BookClassification extends Model
         return $this->belongsTo(Book::class, 'book_id');
     }
 
-    public function callNumber()
+    public function deweyDecimal()
     {
-        return $this->belongsTo(CallNumber::class, 'call_number_id');
+        return $this->belongsTo(DeweyDecimal::class, 'dewey_decimal_id');
     }
 }

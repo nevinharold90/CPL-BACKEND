@@ -6,6 +6,11 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Controllers\_Test\OnlineUsers;
+use App\Http\Controllers\Books\BooksController;
+use App\Http\Controllers\Books\AuthorController;
+use App\Http\Controllers\Books\DeweyDecimalController;
+// use App\Http\Controllers\Books\AuthorController;
+
 
     // User Route
         Route::post('user/admin/register', [RegisterController::class, 'createAdmin']);
@@ -17,6 +22,15 @@ use App\Http\Controllers\_Test\OnlineUsers;
         });
     // User Route
 
+    // Books Route
+        Route::middleware(['auth:sanctum'])->group(function () {
+            Route::post('/book/register', [BooksController::class, 'registerBook']);
+        });
+        Route::get('/book/index', [BooksController::class, 'bookIndex']); // <- Show all books and its copy(ies)
+
+        Route::post('book/callnumber/register', [DeweyDecimalController::class, 'callnumberRegister']);
+        Route::post('book/author/register', [AuthorController::class, 'authorRegister']);
+    // Books Route
 
     // API Checker
         Route::get('test', function () {

@@ -12,23 +12,29 @@ class UserResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-public function toArray(Request $request): array
+    public function toArray(Request $request): array
     {
+        $firstName  = $this->userCredential?->first_name;
+        $lastName   = $this->userCredential?->last_name;
+        $middleName = $this->userCredential?->middle_name;
+
         return [
             'id'             => $this->id,
             'employee_id_no' => $this->employee_id_no,
             'username'       => $this->username,
 
-            // Use optional() so your code won't crash if a user somehow doesn't have a credential record
-            'last_name'      => optional($this->userCredential)->last_name,
-            'first_name'     => optional($this->userCredential)->first_name,
-            'middle_name'    => optional($this->userCredential)->middle_name,
-            'c_number'       => optional($this->userCredential)->c_number,
+            // Individual fields
+            'first_name'     => $firstName,
+            'last_name'      => $lastName,
+            'middle_name'    => $middleName,
+            'c_number'       => $this->userCredential?->c_number,
+
+            // Optional: Pre-formatted full name
+            'full_name'      => trim("{$firstName} {$middleName} {$lastName}"),
 
             'email'          => $this->email,
             'status'         => $this->status,
             'role'           => $this->role,
-            // 'is_online'      => $this->status === 'online',
         ];
     }
 }

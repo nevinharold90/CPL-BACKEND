@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('call_numbers', function (Blueprint $table) {
+        Schema::create('dewey_decimals', function (Blueprint $table) {
             $table->id();
-            $table->integer('call_number');
-            $table->string('call_name');
-            // $table->integer('parent_id');
-            // $table->integer('sub_parent_id');
+            $table->string('dd_number');
+            $table->string('dd_name');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('call_numbers');
+        Schema::dropIfExists('dewey_decimals');
     }
 };

@@ -10,21 +10,16 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
-        'barcode_data',
-        'qrcode_data',
-        'accession_number_id',
-        'user_id',
-        'isbn',
+        'users_id',
         'title',
-        'status',
-        'condition',
-        'source_of_fund',
+        'image_url',
+        'isbn'
     ];
 
 
     public function bookAuthor()
     {
-        return $this->hasMany(BookAuthor::class);
+        return $this->belongsToMany(BookAuthor::class, 'book_authors', 'book_id', 'author_id');
     }
 
     public function user()
@@ -32,19 +27,24 @@ class Book extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function authors()
+{
+    return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id')
+                ->using(BookAuthor::class);
+}
+
     public function bookClassification()
     {
-        return $this->hasMany(BookClassification::class);
+        return $this->belongsTo(BookClassification::class, 'book_id');
     }
-
     public function readSession()
     {
         return $this->hasMany(ReadSession::class);
     }
 
-    public function bookCopies()
+    public function bookCopy()
     {
-        return $this->hasMany(BookCopies::class);
+        return $this->hasMany(BookCopy::class, 'book_id');
     }
 
     // public function bookCover()

@@ -47,7 +47,7 @@ class RegisterController extends BaseController
 
             // Step B: Create the Admin's system login account linked to that profile ID
             return User::create([
-                'user_credential_id'   => $credential->id,
+                'user_credential_id'    => $credential->id,
                 'employee_id_no'        => $request->employee_id_no,
                 'username'              => $request->username,
                 'email'                 => $request->email,
@@ -63,10 +63,12 @@ class RegisterController extends BaseController
             'status'  => 'success',
             'message' => 'System Administrator account provisioned successfully.',
             'data'    => [
-                'id'       => $adminUser->id,
-                'username' => $adminUser->username,
-                'email'    => $adminUser->email,
-                'role'     => $adminUser->role
+                'id'                    => $adminUser->id,
+                'username'              => $adminUser->username,
+                'email'                 => $adminUser->email,
+                'role'                  => $adminUser->role,
+                'first_name'            => $adminUser->userCredential?->first_name,
+                'last_name'             => $adminUser->userCredential?->last_name,
             ]
         ], 201);
 
