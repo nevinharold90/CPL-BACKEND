@@ -14,7 +14,10 @@ class Book extends Model
         'users_id',
         'title',
         'image_url',
-        'isbn'
+        'isbn',
+        'summary',
+        'description',
+
     ];
 
 
@@ -40,7 +43,7 @@ class Book extends Model
 
     public function bookClassification()
     {
-        return $this->belongsTo(BookClassification::class, 'book_id');
+        return $this->hasOne(BookClassification::class, 'book_id');
     }
     public function readSession()
     {

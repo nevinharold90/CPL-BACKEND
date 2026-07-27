@@ -15,6 +15,7 @@ class BookCopy extends Model
         'condition',
         'source_of_fund',
         'status',
+        'material_type'
     ];
 
     public function book()
