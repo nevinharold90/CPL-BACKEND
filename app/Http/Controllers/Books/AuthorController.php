@@ -25,4 +25,14 @@ class AuthorController extends Controller
             'message' => 'Author registered successfully.'
         ], 201);
     }
+
+    public function authorIndex()
+{
+    $authors = Author::select('id', 'full_name')->get();
+
+    return response()->json([
+        'success' => true,
+        'data'    => $authors
+    ]);
+}
 }

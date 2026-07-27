@@ -26,10 +26,14 @@ use App\Http\Controllers\Books\DeweyDecimalController;
         Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/book/register', [BooksController::class, 'registerBook']);
         });
+
         Route::get('/book/index', [BooksController::class, 'bookIndex']); // <- Show all books and its copy(ies)
 
-        Route::post('book/callnumber/register', [DeweyDecimalController::class, 'callnumberRegister']);
+        Route::post('book/dewey-decimal/register', [DeweyDecimalController::class, 'callnumberRegister']);
+
+
         Route::post('book/author/register', [AuthorController::class, 'authorRegister']);
+        Route::get('book/author/index', [AuthorController::class, 'authorIndex']);
     // Books Route
 
     // API Checker

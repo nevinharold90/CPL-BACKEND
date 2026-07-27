@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
@@ -27,11 +28,15 @@ class Book extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function authors()
-{
-    return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id')
-                ->using(BookAuthor::class);
-}
+    public function authors(): BelongsToMany
+        {
+            return $this->belongsToMany(
+                Author::class,
+                'book_authors', // pivot table name
+                'book_id',      // foreign key on pivot table
+                'author_id'     // foreign key on author table
+            );
+        }
 
     public function bookClassification()
     {

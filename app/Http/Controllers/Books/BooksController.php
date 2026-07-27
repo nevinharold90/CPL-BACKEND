@@ -19,8 +19,11 @@ class BooksController extends BaseController
 {
     public function bookIndex()
     {
-        // Fetch books without deep nesting
-        $books = Book::all();
+        $books = Book::with([
+            'authors:id,full_name',
+            'bookCopy:id,book_id,condition,barcode,barcode_data,qrcode_data'
+        ])
+        ->get(['id', 'title', 'image_url', 'isbn']);
 
         return response()->json([
             'success' => true,
@@ -29,13 +32,13 @@ class BooksController extends BaseController
     }
 
 
-
     // Book Registration Function Starts Here
     public function registerBook(Request $request)
     {
         // 1. Validate incoming data
         $validator = Validator::make($request->all(), [
             'title'            => 'required|string|max:255',
+            'isbn'             => 'nullable|string|unique:books,isbn', // 👈 Rejects duplicate ISBNs automatically
             'image_url'        => 'nullable|string',
             'author_ids'       => 'required|array|min:1',
             'author_ids.*'     => 'required|string',
@@ -67,6 +70,7 @@ class BooksController extends BaseController
                 $book = Book::create([
                     'users_id'  => $request->user()?->id ?? 1, // Fallback to 1 during local testing
                     'title'     => $request->title,
+                    'isbn'      => $request->isbn,
                     'image_url' => $request->image_url,
                 ]);
 
@@ -88,7 +92,6 @@ class BooksController extends BaseController
                 }
 
                 // C. Save Book Classification
-                // If fiction, we pass null for dewey_decimal_id
                 $deweyId = $request->book_type === 'fiction' ? null : $request->dewey_decimal_id;
 
                 $classification = BookClassification::create([
@@ -106,7 +109,6 @@ class BooksController extends BaseController
                     $prefix = 'F/FIC';
                 } else {
                     $dewey = DeweyDecimal::find($request->dewey_decimal_id);
-                    // Adjust 'class_number' to match your column name (e.g., dd_number, class_number, dewey_code)
                     $prefix = $dewey->class_number ?? $dewey->dd_number ?? '';
                 }
 
@@ -128,7 +130,7 @@ class BooksController extends BaseController
                         'qrcode_data'         => $qrCodeData,
                         'accession_number_id' => $accessionNumber,
                         'status'              => 'available',
-                        'source_of_fund'       => $request->source_of_fund ?? 'Purchased',
+                        'source_of_fund'      => $request->source_of_fund ?? 'Purchased',
                         'condition'           => $request->condition ?? 'Good',
                     ]);
 
@@ -138,7 +140,7 @@ class BooksController extends BaseController
                 return [
                     'book'           => $book,
                     'classification' => $classification,
-                    'call_number'    => $generatedCallNumber,
+                    'call_number'    => $call_number ?? $generatedCallNumber,
                     'copies'         => $registeredCopies,
                 ];
             });
