@@ -23,9 +23,7 @@ use App\Http\Controllers\Books\DeweyDecimalController;
     // User Route
 
     // Books Route
-        Route::middleware(['auth:sanctum'])->group(function () {
-            Route::post('/book/register', [BooksController::class, 'registerBook']);
-        });
+        Route::post('/book/register', [BooksController::class, 'registerBook']);
 
         Route::get('/book/index', [BooksController::class, 'bookIndex']); // <- Show all books and its copy(ies)
 

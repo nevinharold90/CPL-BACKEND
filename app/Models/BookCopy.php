@@ -12,6 +12,7 @@ class BookCopy extends Model
         'qrcode_data',
         'accession_number_id',
         'category',
+        'location',
         'condition',
         'source_of_fund',
         'status',

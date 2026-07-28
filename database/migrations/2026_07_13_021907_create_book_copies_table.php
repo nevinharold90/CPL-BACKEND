@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('condition')->nullable(); //new, good, some wear, damaged
             $table->string('source_of_fund')->nullable(); //donated, purchased
             $table->string('status'); //available','not available', '', 'donated', 'walk-in', 'lost'
+            $table->string('location');
+            $table->string('material_type');
             $table->timestamps();
         });
     }

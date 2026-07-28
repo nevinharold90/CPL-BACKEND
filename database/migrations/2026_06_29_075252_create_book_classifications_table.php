@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('book_id')->constrained('books')->cascadeOnDelete();
             $table->foreignId('dewey_decimal_id')->nullable()->constrained('dewey_decimals');
             $table->enum('book_type', ['fiction', 'non-fiction']);
+            $table->string('place_of_publication')->nullable();
             $table->string('cutter');
-            $table->string('location');
             $table->year('year_published');
             $table->string('category');
             $table->timestamps();

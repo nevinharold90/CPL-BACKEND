@@ -27,12 +27,12 @@ class AuthorController extends Controller
     }
 
     public function authorIndex()
-{
-    $authors = Author::select('id', 'full_name')->get();
+    {
+        $authors = Author::select('id', 'full_name', 'background')->get();
 
-    return response()->json([
-        'success' => true,
-        'data'    => $authors
-    ]);
-}
+        return response()->json([
+            'success' => true,
+            'data'    => $authors
+        ]);
+    }
 }

@@ -21,19 +21,24 @@ class BooksController extends BaseController
     {
         $books = Book::with([
             'authors:id,full_name,background',
-            'bookCopy:id,book_id,barcode_data,qrcode_data,accession_number_id,condition,status',
-            'bookClassification:id,book_id,dewey_decimal_id,book_type,cutter,year_published,location,category',
+            'bookCopy:id,book_id,barcode_data,qrcode_data,location,accession_number_id,condition,status',
+            'bookClassification:id,book_id,dewey_decimal_id,book_type,cutter,year_published,category',
             'bookClassification.deweyDecimal:id,dd_number,dd_name'
         ])
         ->get(['id', 'title', 'image_url', 'isbn']);
 
         $books->each(function ($book) {
-            // Hide pivot on authors
+            // Hide pivot metadata on authors
             $book->authors->makeHidden('pivot');
 
-            // Explicitly append call_number on classification if it exists
             if ($book->bookClassification) {
-                $book->bookClassification->append('call_number');
+                // 1. Assign call_number to root book level
+                $book->call_number = $book->bookClassification->call_number;
+
+                // 2. Hide call_number inside the nested bookClassification object to prevent duplicate key
+                $book->bookClassification->makeHidden('call_number');
+            } else {
+                $book->call_number = null;
             }
         });
 
@@ -50,10 +55,10 @@ class BooksController extends BaseController
         // 1. Validate incoming data
         $validator = Validator::make($request->all(), [
             'title'                => 'required|string|max:255',
-            'isbn'                 => 'nullable|string|unique:books,isbn',
+            'isbn'                 => 'required|string|unique:books,isbn',
             'image_url'            => 'nullable|string',
-            'summary'              => 'nullable|string', // 👈 Added
-            'description'          => 'nullable|string', // 👈 Added
+            'summary'              => 'nullable|string',
+            'description'          => 'nullable|string',
             'author_ids'           => 'required|array|min:1',
             'author_ids.*'         => 'required|string',
             'book_type'            => 'required|in:fiction,non-fiction',
@@ -65,13 +70,28 @@ class BooksController extends BaseController
             'year_published'       => 'required|digits:4',
             'location'             => 'required|string',
             'category'             => 'required|string',
-            'place_of_publication' => 'nullable|string', // 👈 Added
+            'place_of_publication' => 'required|string',
 
-            'material_type'        => 'nullable|string', // 👈 Added
-            'source_of_fund'       => 'nullable|string',
-            'condition'            => 'nullable|string',
+            'material_type'        => 'nullable|string', // Changed to nullable so fallbacks work
+            'source_of_fund'       => 'nullable|string', // Changed to nullable so fallbacks work
+            'condition'            => 'nullable|string', // Changed to nullable so fallbacks work
             'number_of_copies'     => 'nullable|integer|min:1',
+        ],[
+            'isbn.unique' => 'The book already exists in the database.' // <- Error if same ISBN
         ]);
+
+        // Handle authentication resolution early
+        $user = $request->user('sanctum') ?? $request->user();
+
+        if (!$user && !app()->isLocal()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Authentication required. No valid Bearer token found.',
+                'error'   => 'Unauthenticated'
+            ], 401);
+        }
+
+        $userId = $user?->id ?? 1; // Fallback to 1 for local testing
 
         if ($validator->fails()) {
             return response()->json([
@@ -81,9 +101,8 @@ class BooksController extends BaseController
         }
 
         try {
-            // 2. Perform database transaction
-            $response = DB::transaction(function () use ($request) {
-                $userId = $request->user()?->id ?? 1; // Fallback to 1 for testing
+            // 2. Perform database transaction (Pass $userId into the scope)
+            $response = DB::transaction(function () use ($request, $userId) {
 
                 // A. Save Main Book Record
                 $book = Book::create([
@@ -91,8 +110,8 @@ class BooksController extends BaseController
                     'title'       => $request->title,
                     'isbn'        => $request->isbn,
                     'image_url'   => $request->image_url,
-                    'summary'     => $request->summary,     // 👈 Saved
-                    'description' => $request->description, // 👈 Saved
+                    'summary'     => $request->summary,
+                    'description' => $request->description,
                 ]);
 
                 // B. Dynamic Author Lookup / Auto-creation
@@ -121,14 +140,13 @@ class BooksController extends BaseController
                     'book_type'            => $request->book_type,
                     'cutter'               => $request->cutter,
                     'year_published'       => $request->year_published,
-                    'location'             => $request->location,
                     'category'             => $request->category,
-                    'place_of_publication' => $request->place_of_publication, // 👈 Saved
+                    'place_of_publication' => $request->place_of_publication,
                 ]);
 
                 // D. Construct Call Number
                 if ($request->book_type === 'fiction') {
-                    $prefix = 'F'; // Or 'FIC' / 'F/FIC'
+                    $prefix = 'F';
                 } else {
                     $dewey = DeweyDecimal::find($request->dewey_decimal_id);
                     $prefix = $dewey->dd_number ?? $dewey->class_number ?? '';
@@ -147,15 +165,16 @@ class BooksController extends BaseController
                     $accessionNumber = 'ACC-' . date('Y') . '-' . sprintf('%06d', mt_rand(1, 999999));
 
                     $copy = BookCopy::create([
-                        'users_id'            => $userId, // 👈 Required FK from your ERD (added by user)
+                        'users_id'            => $userId,
                         'book_id'             => $book->id,
                         'barcode_data'        => $barcodeData,
                         'qrcode_data'         => $qrCodeData,
+                        'location'             => $request->location,
                         'accession_number_id' => $accessionNumber,
                         'status'              => 'available',
                         'source_of_fund'      => $request->source_of_fund ?? 'Purchased',
                         'condition'           => $request->condition ?? 'Good',
-                        'material_type'       => $request->material_type ?? 'Book', // 👈 Saved with default fallback
+                        'material_type'       => $request->material_type ?? 'Book',
                     ]);
 
                     $registeredCopies[] = $copy;

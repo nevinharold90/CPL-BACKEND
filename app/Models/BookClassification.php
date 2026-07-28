@@ -15,7 +15,6 @@ class BookClassification extends Model
         'cutter',
         'category',
         'year_published',
-        'location',
         'place_of_publication'
     ];
 
