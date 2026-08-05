@@ -1,5 +1,7 @@
 <?php
 
+// This Section right here uses CORS to filter out requests from other origins. This is important for security reasons, as it prevents malicious websites from making requests to your API without your permission.
+
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
